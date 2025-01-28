@@ -10,12 +10,18 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-app.UseCors(policy =>
+
+builder.Services.AddCors(options =>
 {
-    policy.AllowAnyOrigin() 
-          .AllowAnyHeader()
-          .AllowAnyMethod();
+    options.AddPolicy("AllowSpecificOrigin", policy =>
+    {
+        policy.WithOrigins("https://ricardocruz41.github.io")
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
 });
+
+app.UseCors("AllowSpecificOrigin");
 
 app.MapControllers();
 app.Run();
